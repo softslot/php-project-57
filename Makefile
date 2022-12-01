@@ -25,10 +25,10 @@ du:
 	composer dump-autoload
 
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 app routes tests
+	composer exec --verbose phpcs -- --standard=PSR12 app routes
 
 lint-fix:
-	composer exec --verbose phpcbf -- --standard=PSR12 app routes tests
+	composer exec --verbose phpcbf -- --standard=PSR12 app routes
 
 test:
 	composer exec --verbose phpunit tests
