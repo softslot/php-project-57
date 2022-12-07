@@ -22,6 +22,10 @@ class TaskStatusController extends Controller
 
     public function create(): View
     {
+        if (auth()->guest()) {
+            return abort(403);
+        }
+
         return view('task_status.create');
     }
 
@@ -43,25 +47,41 @@ class TaskStatusController extends Controller
 
     public function edit(TaskStatus $taskStatus): View
     {
+        if (auth()->guest()) {
+            return abort(403);
+        }
+
         return view('task_status.edit', compact('taskStatus'));
     }
 
     public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus): RedirectResponse
     {
-        if ($taskStatus->user_id === auth()->id()) {
-            $taskStatus->update($request->input());
-            flash(__('flash.status_edited'))->success();
+        if (auth()->guest()) {
+            return abort(403);
         }
+
+        $taskStatus->update($request->input());
+        flash(__('flash.status_edited'))->success();
 
         return redirect()->route('task_statuses.index');
     }
 
     public function destroy(TaskStatus $taskStatus): RedirectResponse
     {
-        if ($taskStatus->user_id === auth()->id()) {
-            $taskStatus->delete();
-            flash(__('flash.status_deleted'))->success();
+        if (auth()->guest()) {
+            return abort(403);
         }
+
+        if ($taskStatus->user_id !== auth()->id()) {
+            flash(__('flash.status_not_deleted'))->error();
+
+            return redirect()
+                ->route('task_statuses.index')
+                ->withErrors(__('flash.status_not_deleted'));
+        }
+
+        $taskStatus->delete();
+        flash(__('flash.status_deleted'))->success();
 
         return redirect()->route('task_statuses.index');
     }
