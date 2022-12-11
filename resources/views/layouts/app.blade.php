@@ -8,9 +8,6 @@
 
         <title>{{ __('main.project_name') }}</title>
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -27,28 +24,24 @@
                         <div class="flex items-center lg:order-2">
                             @if(auth()->guest())
                             <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                {{ __('main.login') }}
+                                {{ __('auth.login') }}
                             </a>
                             <a href="{{ route('register') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                                {{ __('main.register') }}
+                                {{ __('auth.register') }}
                             </a>
                             @else
                             <a href="{{ route('logout') }}"
                                data-method="POST"
                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                                Выход
+                                {{ __('auth.exit') }}
                             </a>
                             @endif
-
-{{--                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
-{{--                            @csrf--}}
-{{--                            </form>--}}
                         </div>
 
                         <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
                             <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                                 <li>
-                                    <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                    <a href="{{ route('tasks.index') }}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
                                         {{ __('main.tasks') }}
                                     </a>
                                 </li>

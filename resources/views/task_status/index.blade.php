@@ -5,16 +5,16 @@
         <div>
             <a href="{{ route('task_statuses.create') }}"
                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                {{ __('main.create_status') }}
+                {{ __('task_status.create') }}
             </a>
         </div>
 
         <table class="mt-4">
             <thead class="border-b-2 border-solid border-black text-left">
             <tr>
-                <th>{{ __('table.id') }}</th>
-                <th>{{ __('table.name') }}</th>
-                <th>{{ __('table.created_at') }}</th>
+                <th>{{ __('task_status.id') }}</th>
+                <th>{{ __('task_status.name') }}</th>
+                <th>{{ __('task_status.created_at') }}</th>
                 <th>{{ __('table.actions') }}</th>
             </tr>
             </thead>
