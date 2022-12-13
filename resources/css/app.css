@@ -5,3 +5,23 @@
 h1 {
     font-size: 2rem;
 }
+
+.alert-success {
+    background-color: theme('colors.green.100');
+    color: theme('colors.green.700');
+}
+
+.alert-danger {
+    background-color: theme('colors.red.100');
+    color: theme('colors.red.700');
+}
+
+.alert-warning {
+    background-color: theme('colors.yellow.100');
+    color: theme('colors.yellow.700');
+}
+
+.alert-info {
+    background-color: theme('colors.blue.100');
+    color: theme('colors.blue.700');
+}
