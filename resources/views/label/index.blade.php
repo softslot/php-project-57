@@ -1,6 +1,4 @@
 <x-app-layout>
-    <div class="grid col-span-full">
-
     <h1 class="mb-5">{{ __('main.labels') }}</h1>
 
     <div>
@@ -36,11 +34,10 @@
                 </td>
             </tr>
             @endforeach
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
-        <div class="mt-4">
-            {{ $labels->links() }}
-        </div>
+    <div class="mt-4">
+        {{ $labels->links() }}
     </div>
 </x-app-layout>

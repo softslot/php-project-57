@@ -51,8 +51,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                                        {{ __('main.tags') }}
+                                    <a href="{{ route('labels.index') }}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                        {{ __('main.labels') }}
                                     </a>
                                 </li>
                             </ul>
@@ -64,8 +64,12 @@
             <!-- Page Content -->
             <section class="bg-white dark:bg-gray-900">
                 <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
-                    @include('flash::message')
-                    {{ $slot }}
+                    <div class="grid col-span-full">
+                        @include('flash::message')
+                    </div>
+                    <div class="grid col-span-full">
+                        {{ $slot }}
+                    </div>
                 </div>
             </section>
         </div>

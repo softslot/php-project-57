@@ -1,3 +1,5 @@
+@csrf
+
 <div class="flex flex-col">
     <div>
         <label for="name">{{ __('task_status.name') }}</label>
@@ -9,6 +11,7 @@
                id="name"
                value="{{ old('name', $taskStatus->name ?? '') }}">
     </div>
+
     <div class="mt-2">
         <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                type="submit"

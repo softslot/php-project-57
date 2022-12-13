@@ -1,5 +1,6 @@
-<div class="flex flex-col">
+@csrf
 
+<div class="flex flex-col">
     <div>
         <label for="name">{{ __('task.name') }}</label>
     </div>
