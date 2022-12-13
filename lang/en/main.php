@@ -4,7 +4,7 @@ return [
     'project_name' => 'Task Manager',
     'tasks' => 'Tasks',
     'statuses' => 'Statuses',
-    'tags' => 'Tags',
+    'labels' => 'Labels',
     'create' => 'Create',
     'update' => 'Update',
 ];
