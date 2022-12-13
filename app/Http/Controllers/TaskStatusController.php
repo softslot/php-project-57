@@ -15,7 +15,7 @@ class TaskStatusController extends Controller
     {
         $taskStatuses = DB::table('task_statuses')
             ->select(['*'])
-            ->get();
+            ->paginate();
 
         return view('task_status.index', compact('taskStatuses'));
     }
@@ -40,7 +40,7 @@ class TaskStatusController extends Controller
             ->create($data)
             ->save();
 
-        flash(__('flash.status_added'))->success();
+        flash(__('task_status.added'))->success()->important();
 
         return redirect()->route('task_statuses.index');
     }
@@ -61,7 +61,7 @@ class TaskStatusController extends Controller
         }
 
         $taskStatus->update($request->input());
-        flash(__('flash.status_edited'))->success();
+        flash(__('task_status.updated'))->success();
 
         return redirect()->route('task_statuses.index');
     }
@@ -73,15 +73,15 @@ class TaskStatusController extends Controller
         }
 
         if ($taskStatus->user_id !== auth()->id()) {
-            flash(__('flash.status_not_deleted'))->error();
+            flash(__('task_status.not_deleted'))->error();
 
             return redirect()
                 ->route('task_statuses.index')
-                ->withErrors(__('flash.status_not_deleted'));
+                ->withErrors(__('task_status.not_deleted'));
         }
 
         $taskStatus->delete();
-        flash(__('flash.status_deleted'))->success();
+        flash(__('task_status.deleted'))->success();
 
         return redirect()->route('task_statuses.index');
     }

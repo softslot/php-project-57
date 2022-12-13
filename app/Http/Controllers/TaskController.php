@@ -53,7 +53,7 @@ class TaskController extends Controller
 
         Task::query()->create($data);
 
-        flash(__('flash.task_added'))->success();
+        flash(__('task.added'))->success();
 
         return redirect()->route('tasks.index');
     }
@@ -80,7 +80,7 @@ class TaskController extends Controller
     {
         $task->update($request->input());
 
-        flash(__('flash.task_edited'))->success();
+        flash(__('task.updated'))->success();
 
         return redirect()->route('tasks.index');
     }
@@ -93,7 +93,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        flash(__('flash.task_deleted'))->success();
+        flash(__('task.deleted'))->success();
 
         return redirect()->route('tasks.index');
     }
