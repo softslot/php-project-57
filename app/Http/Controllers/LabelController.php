@@ -26,7 +26,7 @@ class LabelController extends Controller
 
     public function store(StoreLabelRequest $request): RedirectResponse
     {
-        Label::query()->create($request->input());
+        Label::query()->create($request->validated());
 
         flash(__('label.added'))->success();
 
@@ -40,7 +40,7 @@ class LabelController extends Controller
 
     public function update(UpdateLabelRequest $request, Label $label): RedirectResponse
     {
-        $label->update($request->input());
+        $label->update($request->validated());
 
         flash(__('label.updated'))->success();
 

@@ -26,7 +26,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $data = [
-            ...$request->input(),
+            ...$request->validated(),
             'created_by_id' => auth()->id(),
         ];
 
@@ -49,7 +49,7 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $task->update($request->input());
+        $task->update($request->validated());
 
         flash(__('task.updated'))->success();
 

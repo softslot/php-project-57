@@ -32,7 +32,7 @@ class TaskStatusController extends Controller
     public function store(StoreTaskStatusRequest $request): RedirectResponse
     {
         $data = [
-            'name' => $request->input('name'),
+            ...$request->validated(),
             'user_id' => auth()->id(),
         ];
 
@@ -60,7 +60,8 @@ class TaskStatusController extends Controller
             return abort(403);
         }
 
-        $taskStatus->update($request->input());
+        $taskStatus->update($request->validated());
+
         flash(__('task_status.updated'))->success();
 
         return redirect()->route('task_statuses.index');
