@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
-use App\Models\TaskStatus;
-use App\Models\User;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -17,28 +15,12 @@ class TaskController extends Controller
             ->select(['*'])
             ->paginate();
 
-        $taskStatuses = TaskStatus::query()
-            ->select(['id', 'name'])
-            ->get();
-
-        $users = User::query()
-            ->select(['id', 'name'])
-            ->get();
-
-        return response()->view('task.index', compact('tasks', 'taskStatuses', 'users'));
+        return response()->view('task.index', compact('tasks'));
     }
 
     public function create(): Response
     {
-        $taskStatuses = TaskStatus::query()
-            ->select(['id', 'name'])
-            ->get();
-
-        $users = User::query()
-            ->select(['id', 'name'])
-            ->get();
-
-        return response()->view('task.create', compact('taskStatuses', 'users'));
+        return response()->view('task.create');
     }
 
     public function store(StoreTaskRequest $request)
@@ -65,15 +47,7 @@ class TaskController extends Controller
 
     public function edit(Task $task): Response
     {
-        $taskStatuses = TaskStatus::query()
-        ->select(['id', 'name'])
-        ->get();
-
-        $users = User::query()
-            ->select(['id', 'name'])
-            ->get();
-
-        return response()->view('task.edit', compact('task', 'taskStatuses', 'users'));
+        return response()->view('task.edit', compact('task'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
