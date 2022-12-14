@@ -65,7 +65,7 @@
                     <td class="py-4 px-6">{{ $task->status->name }}</td>
                     <td class="py-4 px-6">
                         <a href="{{ route('tasks.show', $task->id) }}" class="text-blue-600 hover:text-blue-900">
-                            {{ $task->description }}
+                            {{ $task->name }}
                         </a>
                     </td>
                     <td class="py-4 px-6">{{ $task->creator->name }}</td>
