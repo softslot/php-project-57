@@ -13,7 +13,7 @@ class UpdateTaskStatusRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateTaskStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|max:255'
+            'name' => 'required|max:255|unique:task_statuses,name,' . $this->task_status->id,
         ];
     }
 }

@@ -11,7 +11,7 @@ class StoreTaskStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class StoreTaskStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|max:255'
+            'name' => 'required|max:255|unique:task_statuses,name',
         ];
     }
 }
