@@ -1,59 +1,66 @@
-@csrf
+{{ Form::token() }}
 
 <div class="flex flex-col">
     <div>
-        <label for="name">{{ __('task.name') }}</label>
+        {{ Form::label('name', __('task.name')) }}
     </div>
     <div class="mt-2">
-        <input class="rounded border-gray-300 w-1/3" name="name" type="text" id="name" value="{{ old('name', $task->name ?? '') }}">
+        {{ Form::text('name', $task->name ?? null, ['class' => 'rounded border-gray-300 w-1/3']) }}
     </div>
+    @error('name')
+        <div class="text-rose-600">{{ $errors->first('name') }}</div>
+    @enderror
 
     <div class="mt-2">
-        <label for="description">{{ __('task.description') }}</label>
+        {{ Form::label('description', __('task.description')) }}
     </div>
     <div>
-        <textarea class="rounded border-gray-300 w-1/3 h-32"
-                  cols="50"
-                  rows="10"
-                  name="description"
-                  id="description">{{ old('decrtiption', $task->description ?? '') }}</textarea>
+        {{ Form::textarea('description',
+            $task->description ?? null,
+            ['rows' => 10, 'cols' => 50, 'class' => 'rounded border-gray-300 w-1/3 h-32'])
+        }}
     </div>
+    @error('description')
+        <div class="text-rose-600">{{ $errors->first('description') }}</div>
+    @enderror
 
     <div class="mt-2">
-        <label for="status_id">{{ __('task.status') }}</label>
+        {{ Form::label('status_id', __('task.status')) }}
     </div>
     <div>
-        <select class="rounded border-gray-300 w-1/3" id="status_id" name="status_id">
-            <option {{ is_null($task->status) ? 'selected="selected"' : '' }} value="">----------</option>
-            @foreach ($taskStatuses as $taskStatus)
-            <option {{ $task->status->id === $taskStatus->id ? 'selected="selected"' : '' }} value="{{ $taskStatus->id }}">{{ $taskStatus->name }}</option>
-            @endforeach
-        </select>
+        {{ Form::select('status_id',
+            $taskStatuses->prepend(['name' => '----------'])->pluck('name', 'id'),
+            $task->status->id ?? null,
+            ['class' => 'rounded border-gray-300 w-1/3'])
+        }}
     </div>
+    @error('status_id')
+        <div class="text-rose-600">{{ $errors->first('status_id') }}</div>
+    @enderror
 
     <div class="mt-2">
-        <label for="assigned_to_id">{{ __('task.assigned') }}</label>
+        {{ Form::label('assigned_to_id', __('task.assigned')) }}
     </div>
     <div>
-        <select class="rounded border-gray-300 w-1/3" id="assigned_to_id" name="assigned_to_id">
-            <option selected="selected" value="">----------</option>
-            @foreach ($users as $user)
-            <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
-        </select>
+        {{ Form::select('assigned_to_id',
+            $users->prepend(['name' => '----------'])->pluck('name', 'id'),
+            $task->executor->id ?? null,
+            ['class' => 'rounded border-gray-300 w-1/3'])
+        }}
     </div>
+    @error('assigned_to_id')
+        <div class="text-rose-600">{{ $errors->first('assigned_to_id') }}</div>
+    @enderror
 
     <div class="mt-2">
-        <label for="labels">{{ __('main.tags') }}</label>
+        {{ Form::label('labels[]', __('main.labels')) }}
     </div>
     <div>
-        <select multiple="multiple" name="labels[]" class="rounded border-gray-300 w-1/3 h-32" id="labels">
-            <option selected="selected" value=""></option>
-            <option value="1">ошибка</option>
-            <option value="2">документация</option>
-            <option value="3">дубликат</option>
-            <option value="4">доработка</option>
-        </select>
+        {{ Form::select('labels[]',
+            $labels->pluck('name', 'id'),
+            $task->labels ?? null,
+            ['class' => 'rounded border-gray-300 w-1/3 h-32', 'multiple' => 'multiple'])
+        }}
     </div>
 
     <div class="mt-2">

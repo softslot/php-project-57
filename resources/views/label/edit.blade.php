@@ -1,8 +1,7 @@
 <x-app-layout>
     <h1 class="mb-5">{{ __('label.edit') }}</h1>
 
-    <form method="POST" action="{{ route('labels.update', $label->id) }}" accept-charset="UTF-8">
-        @method('PUT')
-        @include('label._form', ['buttonText' => __('main.update')])
-    </form>
+    {{ Form::open(['route' => ['labels.update', $label->id], 'method' => 'put']) }}
+        @include('label._form', ['buttonText' => __('label.edit')])
+    {{ Form::close() }}
 </x-app-layout>

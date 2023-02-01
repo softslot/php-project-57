@@ -1,25 +1,23 @@
-@csrf
+{{ Form::token() }}
 
 <div class="flex flex-col">
     <div>
-        <label for="name">{{ __('label.name') }}</label>
+        {{ Form::label('name', __('label.name')) }}
     </div>
     <div class="mt-2">
-        <input class="rounded border-gray-300 w-1/3"
-               name="name"
-               type="text"
-               id="name" value="{{ old('name', $label->name ?? '') }}">
+        {{ Form::text('name', $label->name ?? null, ['class' => 'rounded border-gray-300 w-1/3']) }}
+    </div>
+    @error('name')
+        <div class="text-rose-600">{{ $errors->first('name') }}</div>
+    @enderror
+
+    <div class="mt-2">
+        {{ Form::label('description', __('label.description')) }}
     </div>
     <div class="mt-2">
-        <label for="description">{{ __('label.description') }}</label>
+        {{ Form::textarea('description', $label->description ?? null, ['rows' => 10, 'cols' => 50, 'class' => 'rounded border-gray-300 w-1/3 h-32']) }}
     </div>
-    <div class="mt-2">
-        <textarea class="rounded border-gray-300 w-1/3 h-32"
-                  name="description"
-                  cols="50"
-                  rows="10"
-                  id="description">{{ old('description', $label->description ?? '') }}</textarea>
-    </div>
+
     <div class="mt-2">
         <x-primary-button>{{ $buttonText }}</x-primary-button>
     </div>
