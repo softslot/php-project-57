@@ -40,14 +40,14 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_create_page_as_guest(): void
+    public function test_create_page_from_guest(): void
     {
         $response = $this->get(route('task_statuses.create'));
 
         $response->assertForbidden();
     }
 
-    public function test_create_page_as_user(): void
+    public function test_create_page_from_user(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -56,14 +56,14 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_edit_page_as_guest(): void
+    public function test_edit_page_from_guest(): void
     {
         $response = $this->get(route('task_statuses.edit', $this->taskStatusId));
 
         $response->assertForbidden();
     }
 
-    public function test_edit_page_as_user(): void
+    public function test_edit_page_from_user(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -72,7 +72,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_store_as_user(): void
+    public function test_store_from_user(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -88,7 +88,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
-    public function test_store_as_guest(): void
+    public function test_store_from_guest(): void
     {
         $response = $this->post(
             route('task_statuses.store'),
@@ -98,14 +98,14 @@ class TaskStatusControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_delete_as_guest(): void
+    public function test_delete_from_guest(): void
     {
         $response = $this->delete(route('task_statuses.destroy', $this->taskStatusId));
 
         $response->assertForbidden();
     }
 
-    public function test_delete_as_another_user(): void
+    public function test_delete_from_another_user(): void
     {
         $id = DB::table('task_statuses')->insertGetId($this->data);
 
@@ -121,7 +121,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
-    public function test_update_as_guest(): void
+    public function test_update_from_guest(): void
     {
         $newData = ['name' => 'Новое название статуса'];
         $response = $this->put(
@@ -134,7 +134,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseMissing('task_statuses', $newData);
     }
 
-    public function test_update_as_user(): void
+    public function test_update_from_user(): void
     {
         $newData = ['name' => 'Новое название статуса'];
         $response = $this
@@ -149,7 +149,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $newData);
     }
 
-    public function test_delete_as_owner_user(): void
+    public function test_delete_from_owner_user(): void
     {
         $id = DB::table('task_statuses')->insertGetId($this->data);
 
