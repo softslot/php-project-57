@@ -49,7 +49,8 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_create_page_as_user(): void
     {
-        $response = $this->actingAs($this->user)
+        $response = $this
+            ->actingAs($this->user)
             ->get(route('task_statuses.create'));
 
         $response->assertOk();
@@ -64,7 +65,8 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_edit_page_as_user(): void
     {
-        $response = $this->actingAs($this->user)
+        $response = $this
+            ->actingAs($this->user)
             ->get(route('task_statuses.edit', $this->taskStatusId));
 
         $response->assertOk();
@@ -72,7 +74,8 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_store_as_user(): void
     {
-        $response = $this->actingAs($this->user)
+        $response = $this
+            ->actingAs($this->user)
             ->post(
                 route('task_statuses.store'),
                 $this->data
@@ -134,7 +137,8 @@ class TaskStatusControllerTest extends TestCase
     public function test_update_as_user(): void
     {
         $newData = ['name' => 'Новое название статуса'];
-        $response = $this->actingAs($this->user)
+        $response = $this
+            ->actingAs($this->user)
             ->put(
                 route('task_statuses.update', $this->taskStatusId),
                 $newData
@@ -149,7 +153,8 @@ class TaskStatusControllerTest extends TestCase
     {
         $id = DB::table('task_statuses')->insertGetId($this->data);
 
-        $response = $this->actingAs($this->user)
+        $response = $this
+            ->actingAs($this->user)
             ->delete(route('task_statuses.destroy', $id));
 
         $response
