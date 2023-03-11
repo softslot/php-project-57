@@ -41,7 +41,7 @@ class TaskController extends Controller
         if (isset($validatedData['labels'])) {
             $task->labels()->sync($validatedData['labels']);
         }
-        
+
         flash(__('task.added'))->success();
 
         return redirect()->route('tasks.index');

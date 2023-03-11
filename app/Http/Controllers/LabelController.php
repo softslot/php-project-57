@@ -58,7 +58,7 @@ class LabelController extends Controller
         } else {
             flash(__('label.not_deleted'))->error();
         }
-        
+
         return redirect()->back();
     }
 }
