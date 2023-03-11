@@ -6,26 +6,24 @@ use App\Http\Requests\StoreTaskStatusRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TaskStatusController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TaskStatus::class, 'task_status');
+    }
+    
     public function index(): View
     {
-        $taskStatuses = DB::table('task_statuses')
-            ->select(['*'])
-            ->paginate();
+        $taskStatuses = TaskStatus::paginate();
 
         return view('task_status.index', compact('taskStatuses'));
     }
 
     public function create(): View
     {
-        if (auth()->guest()) {
-            return abort(403);
-        }
-
         return view('task_status.create');
     }
 
@@ -36,9 +34,7 @@ class TaskStatusController extends Controller
             'user_id' => auth()->id(),
         ];
 
-        TaskStatus::query()
-            ->create($data)
-            ->save();
+        TaskStatus::create($data)->save();
 
         flash(__('task_status.added'))->success()->important();
 
@@ -47,19 +43,11 @@ class TaskStatusController extends Controller
 
     public function edit(TaskStatus $taskStatus): View
     {
-        if (auth()->guest()) {
-            return abort(403);
-        }
-
         return view('task_status.edit', compact('taskStatus'));
     }
 
     public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus): RedirectResponse
     {
-        if (auth()->guest()) {
-            return abort(403);
-        }
-
         $taskStatus->update($request->validated());
 
         flash(__('task_status.updated'))->success();
@@ -69,11 +57,7 @@ class TaskStatusController extends Controller
 
     public function destroy(TaskStatus $taskStatus): RedirectResponse
     {
-        if (auth()->guest()) {
-            return abort(403);
-        }
-
-        if ($taskStatus->user_id !== auth()->id()) {
+        if ($taskStatus->creator->id !== auth()->id()) {
             flash(__('task_status.not_deleted'))->error();
 
             return redirect()
@@ -82,6 +66,7 @@ class TaskStatusController extends Controller
         }
 
         $taskStatus->delete();
+
         flash(__('task_status.deleted'))->success();
 
         return redirect()->route('task_statuses.index');

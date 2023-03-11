@@ -10,11 +10,14 @@ use Illuminate\Http\Response;
 
 class LabelController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Label::class, 'label');
+    }
+
     public function index(): Response
     {
-        $labels = Label::query()
-            ->select(['*'])
-            ->paginate();
+        $labels = Label::paginate();
 
         return response()->view('label.index', compact('labels'));
     }
@@ -26,7 +29,7 @@ class LabelController extends Controller
 
     public function store(StoreLabelRequest $request): RedirectResponse
     {
-        Label::query()->create($request->validated());
+        Label::create($request->validated());
 
         flash(__('label.added'))->success();
 

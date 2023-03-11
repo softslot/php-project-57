@@ -9,11 +9,15 @@ use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
+
     public function index(): Response
     {
-        $tasks = Task::query()
-            ->select(['*'])
-            ->paginate();
+        // $tasks = Task::paginate();
+        $tasks = Task::with(['creator', 'executor', 'status'])->paginate();
 
         return response()->view('task.index', compact('tasks'));
     }
@@ -25,13 +29,19 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request)
     {
+        $validatedData = $request->validated();
+
         $data = [
-            ...$request->validated(),
+            ...$validatedData,
             'created_by_id' => auth()->id(),
         ];
 
-        Task::query()->create($data);
+        $task = Task::create($data);
 
+        if (isset($validatedData['labels'])) {
+            $task->labels()->sync($validatedData['labels']);
+        }
+        
         flash(__('task.added'))->success();
 
         return redirect()->route('tasks.index');
@@ -49,7 +59,15 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $task->update($request->validated());
+        $validatedData = $request->validated();
+
+        $task->update($validatedData);
+
+        if (isset($validatedData['labels'])) {
+            $task->labels()->sync($validatedData['labels']);
+        } else {
+            $task->labels()->detach();
+        }
 
         flash(__('task.updated'))->success();
 
@@ -58,10 +76,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if (auth()->id() !== $task->creator->id) {
-            return redirect()->route('tasks.edit');
-        }
-
+        $task->labels()->detach();
         $task->delete();
 
         flash(__('task.deleted'))->success();
