@@ -16,8 +16,12 @@ class TaskController extends Controller
 
     public function index(): Response
     {
-        // $tasks = Task::paginate();
-        $tasks = Task::with(['creator', 'executor', 'status'])->paginate();
+        $tasks = Task::with([
+            'creator',
+            'executor',
+            'status',
+        ])
+        ->paginate();
 
         return response()->view('task.index', compact('tasks'));
     }
