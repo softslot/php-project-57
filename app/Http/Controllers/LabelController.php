@@ -50,13 +50,13 @@ class LabelController extends Controller
         return redirect()->route('labels.index');
     }
 
-    public function destroy(Label $label)
+    public function destroy(Label $label): RedirectResponse
     {
-        $deleted = $label->delete();
-        if ($deleted) {
-            flash(__('label.deleted'))->success();
-        } else {
+        if ($label->tasks->isNotEmpty()) {
             flash(__('label.not_deleted'))->error();
+        } else {
+            $label->delete();
+            flash(__('label.deleted'))->success();
         }
 
         return redirect()->back();
