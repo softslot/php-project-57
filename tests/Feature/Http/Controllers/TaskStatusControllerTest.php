@@ -3,18 +3,18 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    private array $data;
-    private int $taskStatusId;
+    
     private User $user;
+    private TaskStatus $taskStatus;
+    private array $data;
 
     protected function setUp(): void
     {
@@ -22,11 +22,7 @@ class TaskStatusControllerTest extends TestCase
 
         $this->user = User::factory()->create();
 
-        $this->taskStatusId = DB::table('task_statuses')
-            ->insertGetId([
-                'name' => 'Status #1',
-                'user_id' => $this->user->id,
-            ]);
+        $this->taskStatus = TaskStatus::factory()->create();
 
         $this->data = [
             'name' => 'Status #2',
@@ -59,7 +55,7 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_edit_page_from_guest(): void
     {
-        $response = $this->get(route('task_statuses.edit', $this->taskStatusId));
+        $response = $this->get(route('task_statuses.edit', $this->taskStatus->id));
 
         $response->assertForbidden();
     }
@@ -68,7 +64,7 @@ class TaskStatusControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user)
-            ->get(route('task_statuses.edit', $this->taskStatusId));
+            ->get(route('task_statuses.edit', $this->taskStatus->id));
 
         $response->assertOk();
     }
@@ -105,7 +101,7 @@ class TaskStatusControllerTest extends TestCase
     {
         $newData = ['name' => 'New task status name'];
         $response = $this->put(
-            route('task_statuses.update', $this->taskStatusId),
+            route('task_statuses.update', $this->taskStatus->id),
             $newData
         );
 
@@ -120,7 +116,7 @@ class TaskStatusControllerTest extends TestCase
         $response = $this
             ->actingAs($this->user)
             ->put(
-                route('task_statuses.update', $this->taskStatusId),
+                route('task_statuses.update', $this->taskStatus->id),
                 $newData
             );
 
@@ -131,9 +127,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_delete_from_guest(): void
     {
-        $response = $this->delete(route('task_statuses.destroy', $this->taskStatusId));
+        $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatusId]);
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
 
         $response->assertForbidden();
     }
@@ -142,31 +138,31 @@ class TaskStatusControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', $this->taskStatusId));
+            ->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
         $response
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatusId]);
+        $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
     }
 
     public function test_delete_task_status_attached_to_task(): void
     {
         Task::create([
             'name' => 'Task',
-            'status_id' => $this->taskStatusId,
+            'status_id' => $this->taskStatus->id,
             'created_by_id' => $this->user->id,
         ]);
 
         $response = $this
             ->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', $this->taskStatusId));
+            ->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
         $response
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasErrors();
 
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatusId]);
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
     }
 }
