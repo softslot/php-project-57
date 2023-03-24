@@ -20,8 +20,8 @@ class LabelFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
-            'description' => $this->faker->text()
+            'name' => fake()->unique()->text(10),
+            'description' => fake()->paragraph()
         ];
     }
 }

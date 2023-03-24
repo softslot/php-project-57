@@ -24,7 +24,7 @@ class TaskFactory extends Factory
         return [
             'name' => fake()->unique()->text(30),
             'status_id' => $taskStatusesIds->random(),
-            'description' => fake()->text(100),
+            'description' => fake()->paragraph(),
             'created_by_id' => $usersIds->random(),
             'assigned_to_id' => $usersIds->random(),
         ];

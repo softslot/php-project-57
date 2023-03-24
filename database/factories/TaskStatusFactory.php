@@ -20,7 +20,7 @@ class TaskStatusFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->text(30),
+            'name' => fake()->unique()->text(30),
         ];
     }
 }
