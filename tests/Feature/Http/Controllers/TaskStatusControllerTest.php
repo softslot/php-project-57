@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,12 @@ class TaskStatusControllerTest extends TestCase
 
         $this->taskStatusId = DB::table('task_statuses')
             ->insertGetId([
-                'name' => 'Тестовый статус №1',
+                'name' => 'Status #1',
                 'user_id' => $this->user->id,
             ]);
 
         $this->data = [
-            'name' => 'Тестовый статус №2',
+            'name' => 'Status #2',
             'user_id' => $this->user->id,
         ];
     }
@@ -81,11 +82,11 @@ class TaskStatusControllerTest extends TestCase
                 $this->data
             );
 
+        $this->assertDatabaseHas('task_statuses', $this->data);
+
         $response
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasNoErrors();
-
-        $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function test_store_from_guest(): void
@@ -95,48 +96,27 @@ class TaskStatusControllerTest extends TestCase
             $this->data
         );
 
-        $response->assertForbidden();
-    }
-
-    public function test_delete_from_guest(): void
-    {
-        $response = $this->delete(route('task_statuses.destroy', $this->taskStatusId));
+        $this->assertDatabaseMissing('task_statuses', $this->data);
 
         $response->assertForbidden();
-    }
-
-    public function test_delete_from_another_user(): void
-    {
-        $id = DB::table('task_statuses')->insertGetId($this->data);
-
-        $anotherUser = User::factory()->create();
-
-        $response = $this->actingAs($anotherUser)
-            ->delete(route('task_statuses.destroy', $id));
-
-        $response
-            ->assertRedirectToRoute('task_statuses.index')
-            ->assertSessionHasErrors();
-
-        $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function test_update_from_guest(): void
     {
-        $newData = ['name' => 'Новое название статуса'];
+        $newData = ['name' => 'New task status name'];
         $response = $this->put(
             route('task_statuses.update', $this->taskStatusId),
             $newData
         );
 
-        $response->assertForbidden();
-
         $this->assertDatabaseMissing('task_statuses', $newData);
+
+        $response->assertForbidden();
     }
 
     public function test_update_from_user(): void
     {
-        $newData = ['name' => 'Новое название статуса'];
+        $newData = ['name' => 'New task status name'];
         $response = $this
             ->actingAs($this->user)
             ->put(
@@ -149,18 +129,44 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $newData);
     }
 
-    public function test_delete_from_owner_user(): void
+    public function test_delete_from_guest(): void
     {
-        $id = DB::table('task_statuses')->insertGetId($this->data);
+        $response = $this->delete(route('task_statuses.destroy', $this->taskStatusId));
 
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatusId]);
+
+        $response->assertForbidden();
+    }
+
+    public function test_delete_from_user(): void
+    {
         $response = $this
             ->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', $id));
+            ->delete(route('task_statuses.destroy', $this->taskStatusId));
 
         $response
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseMissing('task_statuses', $this->data);
+        $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatusId]);
+    }
+
+    public function test_delete_task_status_attached_to_task(): void
+    {
+        Task::create([
+            'name' => 'Task',
+            'status_id' => $this->taskStatusId,
+            'created_by_id' => $this->user->id,
+        ]);
+
+        $response = $this
+            ->actingAs($this->user)
+            ->delete(route('task_statuses.destroy', $this->taskStatusId));
+
+        $response
+            ->assertRedirectToRoute('task_statuses.index')
+            ->assertSessionHasErrors();
+
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatusId]);
     }
 }

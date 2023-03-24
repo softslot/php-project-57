@@ -57,7 +57,7 @@ class TaskStatusController extends Controller
 
     public function destroy(TaskStatus $taskStatus): RedirectResponse
     {
-        if ($taskStatus->creator->id !== auth()->id()) {
+        if ($taskStatus->tasks()->exists()) {
             flash(__('task_status.not_deleted'))->error();
 
             return redirect()
