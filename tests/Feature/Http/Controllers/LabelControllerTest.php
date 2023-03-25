@@ -57,6 +57,19 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_update_from_guest(): void
+    {
+        $newData = ['name' => 'New label name'];
+        $response = $this->put(
+            route('labels.update', $this->label->id),
+            $newData
+        );
+
+        $this->assertDatabaseMissing('labels', $newData);
+
+        $response->assertForbidden();
+    }
+
     public function test_create_page_from_user(): void
     {
         $response = $this
@@ -89,5 +102,20 @@ class LabelControllerTest extends TestCase
         $response
             ->assertRedirectToRoute('labels.index')
             ->assertSessionHasNoErrors();
+    }
+
+    public function test_update_from_user(): void
+    {
+        $newData = ['name' => 'New label name'];
+        $response = $this
+            ->actingAs($this->user)
+            ->put(
+                route('labels.update', $this->label->id),
+                $newData
+            );
+
+        $response->assertRedirectToRoute('labels.index');
+
+        $this->assertDatabaseHas('labels', $newData);
     }
 }
