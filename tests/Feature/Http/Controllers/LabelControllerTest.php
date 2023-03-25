@@ -13,6 +13,7 @@ class LabelControllerTest extends TestCase
 
     private User $user;
     private Label $label;
+    private array $data;
 
     protected function setUp(): void
     {
@@ -20,6 +21,7 @@ class LabelControllerTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->label = Label::factory()->create();
+        $this->data = ['name' => 'Test Label'];
     }
 
     public function test_index_page(): void
@@ -36,6 +38,25 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_edit_page_from_guest(): void
+    {
+        $response = $this->get(route('labels.edit', $this->label->id));
+
+        $response->assertForbidden();
+    }
+
+    public function test_store_from_guest(): void
+    {
+        $response = $this->post(
+            route('labels.store'),
+            $this->data
+        );
+
+        $this->assertDatabaseMissing('labels', $this->data);
+
+        $response->assertForbidden();
+    }
+
     public function test_create_page_from_user(): void
     {
         $response = $this
@@ -45,13 +66,6 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_edit_page_from_guest(): void
-    {
-        $response = $this->get(route('labels.edit', $this->label->id));
-
-        $response->assertForbidden();
-    }
-
     public function test_edit_page_from_user(): void
     {
         $response = $this
@@ -59,5 +73,21 @@ class LabelControllerTest extends TestCase
             ->get(route('labels.edit', $this->label->id));
 
         $response->assertOk();
+    }
+
+    public function test_store_from_user(): void
+    {
+        $response = $this
+            ->actingAs($this->user)
+            ->post(
+                route('labels.store'),
+                $this->data
+            );
+
+        $this->assertDatabaseHas('labels', $this->data);
+
+        $response
+            ->assertRedirectToRoute('labels.index')
+            ->assertSessionHasNoErrors();
     }
 }
