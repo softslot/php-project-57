@@ -44,6 +44,47 @@ class TaskStatusControllerTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_edit_page_from_guest(): void
+    {
+        $response = $this->get(route('task_statuses.edit', $this->taskStatus->id));
+
+        $response->assertForbidden();
+    }
+
+    public function test_store_from_guest(): void
+    {
+        $response = $this->post(
+            route('task_statuses.store'),
+            $this->data
+        );
+
+        $this->assertDatabaseMissing('task_statuses', $this->data);
+
+        $response->assertForbidden();
+    }
+
+    public function test_update_from_guest(): void
+    {
+        $newData = ['name' => 'New task status name'];
+        $response = $this->put(
+            route('task_statuses.update', $this->taskStatus->id),
+            $newData
+        );
+
+        $this->assertDatabaseMissing('task_statuses', $newData);
+
+        $response->assertForbidden();
+    }
+    
+    public function test_delete_from_guest(): void
+    {
+        $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
+
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
+
+        $response->assertForbidden();
+    }
+
     public function test_create_page_from_user(): void
     {
         $response = $this
@@ -51,13 +92,6 @@ class TaskStatusControllerTest extends TestCase
             ->get(route('task_statuses.create'));
 
         $response->assertOk();
-    }
-
-    public function test_edit_page_from_guest(): void
-    {
-        $response = $this->get(route('task_statuses.edit', $this->taskStatus->id));
-
-        $response->assertForbidden();
     }
 
     public function test_edit_page_from_user(): void
@@ -85,31 +119,6 @@ class TaskStatusControllerTest extends TestCase
             ->assertSessionHasNoErrors();
     }
 
-    public function test_store_from_guest(): void
-    {
-        $response = $this->post(
-            route('task_statuses.store'),
-            $this->data
-        );
-
-        $this->assertDatabaseMissing('task_statuses', $this->data);
-
-        $response->assertForbidden();
-    }
-
-    public function test_update_from_guest(): void
-    {
-        $newData = ['name' => 'New task status name'];
-        $response = $this->put(
-            route('task_statuses.update', $this->taskStatus->id),
-            $newData
-        );
-
-        $this->assertDatabaseMissing('task_statuses', $newData);
-
-        $response->assertForbidden();
-    }
-
     public function test_update_from_user(): void
     {
         $newData = ['name' => 'New task status name'];
@@ -123,15 +132,6 @@ class TaskStatusControllerTest extends TestCase
         $response->assertRedirectToRoute('task_statuses.index');
 
         $this->assertDatabaseHas('task_statuses', $newData);
-    }
-
-    public function test_delete_from_guest(): void
-    {
-        $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
-
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
-
-        $response->assertForbidden();
     }
 
     public function test_delete_from_user(): void
