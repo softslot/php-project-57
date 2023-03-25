@@ -56,7 +56,7 @@ class LabelController extends Controller
             flash(__('label.not_deleted'))->error();
             
             return redirect()
-                ->back()
+                ->route('labels.index')
                 ->withErrors(__('task_status.not_deleted'));
         }
 
