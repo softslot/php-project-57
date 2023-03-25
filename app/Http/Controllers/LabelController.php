@@ -54,7 +54,10 @@ class LabelController extends Controller
     {
         if ($label->tasks->isNotEmpty()) {
             flash(__('label.not_deleted'))->error();
-            return redirect()->back();
+            
+            return redirect()
+                ->back()
+                ->withErrors(__('task_status.not_deleted'));
         }
 
         $label->delete();
