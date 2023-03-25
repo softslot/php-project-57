@@ -22,12 +22,15 @@ class LabelControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
-        $this->label = Label::factory()->create();
         TaskStatus::factory()->create();
+
+        $this->user = User::factory()->create();
+
+        $this->label = Label::factory()->create();
+        
         $this->task = Task::factory()->create();
         
-        $this->data = ['name' => 'Test Label'];
+        $this->data = Task::factory()->make()->only(['name']);
     }
 
     public function test_index_page(): void
@@ -65,13 +68,12 @@ class LabelControllerTest extends TestCase
 
     public function test_update_from_guest(): void
     {
-        $newData = ['name' => 'New label name'];
         $response = $this->put(
             route('labels.update', $this->label->id),
-            $newData
+            $this->data
         );
 
-        $this->assertDatabaseMissing('labels', $newData);
+        $this->assertDatabaseMissing('labels', $this->data);
 
         $response->assertForbidden();
     }
@@ -80,7 +82,7 @@ class LabelControllerTest extends TestCase
     {
         $response = $this->delete(route('labels.destroy', $this->label->id));
 
-        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+        $this->assertDatabaseHas('labels', $this->label->only('id'));
 
         $response->assertForbidden();
     }
@@ -121,17 +123,18 @@ class LabelControllerTest extends TestCase
 
     public function test_update_from_user(): void
     {
-        $newData = ['name' => 'New label name'];
         $response = $this
             ->actingAs($this->user)
             ->put(
                 route('labels.update', $this->label->id),
-                $newData
+                $this->data
             );
 
-        $response->assertRedirectToRoute('labels.index');
+        $response
+            ->assertRedirectToRoute('labels.index')
+            ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas('labels', $newData);
+        $this->assertDatabaseHas('labels', $this->data);
     }
 
     public function test_delete_from_user(): void
@@ -144,7 +147,7 @@ class LabelControllerTest extends TestCase
             ->assertRedirectToRoute('labels.index')
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
+        $this->assertDatabaseMissing('labels', $this->label->only('id'));
     }
 
     public function test_delete_label_attached_to_task(): void
@@ -161,6 +164,6 @@ class LabelControllerTest extends TestCase
             ->assertRedirectToRoute('labels.index')
             ->assertSessionHasErrors();
 
-        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+        $this->assertDatabaseHas('labels', $this->label->only('id'));
     }
 }

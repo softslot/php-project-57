@@ -23,11 +23,8 @@ class TaskStatusControllerTest extends TestCase
         $this->user = User::factory()->create();
 
         $this->taskStatus = TaskStatus::factory()->create();
-
-        $this->data = [
-            'name' => 'Status #2',
-            'user_id' => $this->user->id,
-        ];
+        
+        $this->data = TaskStatus::factory()->make()->only(['name']);
     }
 
     public function test_index_page(): void
@@ -65,13 +62,12 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_update_from_guest(): void
     {
-        $newData = ['name' => 'New task status name'];
         $response = $this->put(
             route('task_statuses.update', $this->taskStatus->id),
-            $newData
+            $this->data,
         );
 
-        $this->assertDatabaseMissing('task_statuses', $newData);
+        $this->assertDatabaseMissing('task_statuses', $this->data);
 
         $response->assertForbidden();
     }
@@ -80,7 +76,7 @@ class TaskStatusControllerTest extends TestCase
     {
         $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
+        $this->assertDatabaseHas('task_statuses', $this->taskStatus->only('id'));
 
         $response->assertForbidden();
     }
@@ -121,17 +117,18 @@ class TaskStatusControllerTest extends TestCase
 
     public function test_update_from_user(): void
     {
-        $newData = ['name' => 'New task status name'];
         $response = $this
             ->actingAs($this->user)
             ->put(
                 route('task_statuses.update', $this->taskStatus->id),
-                $newData
+                $this->data
             );
 
-        $response->assertRedirectToRoute('task_statuses.index');
+        $response
+            ->assertRedirectToRoute('task_statuses.index')
+            ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas('task_statuses', $newData);
+        $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function test_delete_from_user(): void
@@ -144,15 +141,13 @@ class TaskStatusControllerTest extends TestCase
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
+        $this->assertDatabaseMissing('task_statuses', $this->taskStatus->only('id'));
     }
 
     public function test_delete_task_status_attached_to_task(): void
     {
-        Task::create([
-            'name' => 'Task',
+        Task::factory()->create([
             'status_id' => $this->taskStatus->id,
-            'created_by_id' => $this->user->id,
         ]);
 
         $response = $this
@@ -163,6 +158,6 @@ class TaskStatusControllerTest extends TestCase
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasErrors();
 
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
+        $this->assertDatabaseHas('task_statuses', $this->taskStatus->only('id'));
     }
 }

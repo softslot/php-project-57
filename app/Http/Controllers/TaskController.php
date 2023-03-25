@@ -35,12 +35,10 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
-        $data = [
+        $task = Task::create([
             ...$validatedData,
             'created_by_id' => auth()->id(),
-        ];
-
-        $task = Task::create($data);
+        ]);
 
         if (isset($validatedData['labels'])) {
             $task->labels()->sync($validatedData['labels']);
@@ -80,6 +78,14 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        if ($task->creator->id !== auth()->id()) {
+            flash(__('task.not_deleted'))->error();
+
+            return redirect()
+                ->route('tasks.index')
+                ->withErrors(__('task.not_deleted'));
+        }
+
         $task->labels()->detach();
         $task->delete();
 
