@@ -70,6 +70,15 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_delete_from_guest(): void
+    {
+        $response = $this->delete(route('labels.destroy', $this->label->id));
+
+        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+
+        $response->assertForbidden();
+    }
+
     public function test_create_page_from_user(): void
     {
         $response = $this
@@ -117,5 +126,18 @@ class LabelControllerTest extends TestCase
         $response->assertRedirectToRoute('labels.index');
 
         $this->assertDatabaseHas('labels', $newData);
+    }
+
+    public function test_delete_from_user(): void
+    {
+        $response = $this
+            ->actingAs($this->user)
+            ->delete(route('labels.destroy', $this->label->id));
+
+        $response
+            ->assertRedirectToRoute('labels.index')
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
     }
 }
