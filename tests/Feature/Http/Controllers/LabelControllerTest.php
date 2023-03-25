@@ -149,8 +149,9 @@ class LabelControllerTest extends TestCase
 
     public function test_delete_label_attached_to_task(): void
     {
-        $this->task->labels()->attach($this->label);
-        $this->task->save();
+        $this->task
+            ->labels()
+            ->attach($this->label);
 
         $response = $this
             ->actingAs($this->user)
