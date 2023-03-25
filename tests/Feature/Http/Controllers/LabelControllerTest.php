@@ -3,6 +3,8 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Label;
+use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,6 +15,7 @@ class LabelControllerTest extends TestCase
 
     private User $user;
     private Label $label;
+    private Task $task;
     private array $data;
 
     protected function setUp(): void
@@ -21,6 +24,9 @@ class LabelControllerTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->label = Label::factory()->create();
+        TaskStatus::factory()->create();
+        $this->task = Task::factory()->create();
+        
         $this->data = ['name' => 'Test Label'];
     }
 
@@ -139,5 +145,21 @@ class LabelControllerTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
+    }
+
+    public function test_delete_label_attached_to_task(): void
+    {
+        $this->task->labels()->attach($this->label);
+        $this->task->save();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->delete(route('labels.destroy', $this->label->id));
+
+        $response
+            ->assertRedirect()
+            ->assertSessionHasErrors();
+
+        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
     }
 }
