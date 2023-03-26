@@ -29,12 +29,8 @@ class TaskStatusController extends Controller
 
     public function store(StoreTaskStatusRequest $request): RedirectResponse
     {
-        $data = [
-            ...$request->validated(),
-            'user_id' => auth()->id(),
-        ];
-
-        TaskStatus::create($data)->save();
+        TaskStatus::create($request->validated())
+            ->save();
 
         flash(__('task_status.added'))->success()->important();
 

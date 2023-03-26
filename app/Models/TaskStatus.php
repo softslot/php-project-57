@@ -11,12 +11,7 @@ class TaskStatus extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'user_id'];
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    protected $fillable = ['name'];
 
     public function tasks(): HasMany
     {
