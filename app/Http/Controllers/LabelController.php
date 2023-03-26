@@ -19,12 +19,12 @@ class LabelController extends Controller
     {
         $labels = Label::paginate();
 
-        return view('pages.label.index', compact('labels'));
+        return view('pages.labels.index', compact('labels'));
     }
 
     public function create(): View
     {
-        return view('pages.label.create');
+        return view('pages.labels.create');
     }
 
     public function store(StoreLabelRequest $request): RedirectResponse
@@ -38,7 +38,7 @@ class LabelController extends Controller
 
     public function edit(Label $label): View
     {
-        return view('pages.label.edit', compact('label'));
+        return view('pages.labels.edit', compact('label'));
     }
 
     public function update(UpdateLabelRequest $request, Label $label): RedirectResponse

@@ -23,12 +23,12 @@ class TaskController extends Controller
         ])
         ->paginate();
 
-        return view('pages.task.index', compact('tasks'));
+        return view('pages.tasks.index', compact('tasks'));
     }
 
     public function create(): View
     {
-        return view('pages.task.create');
+        return view('pages.tasks.create');
     }
 
     public function store(StoreTaskRequest $request)
@@ -51,12 +51,12 @@ class TaskController extends Controller
 
     public function show(Task $task): View
     {
-        return view('pages.task.show', compact('task'));
+        return view('pages.tasks.show', compact('task'));
     }
 
     public function edit(Task $task): View
     {
-        return view('pages.task.edit', compact('task'));
+        return view('pages.tasks.edit', compact('task'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
