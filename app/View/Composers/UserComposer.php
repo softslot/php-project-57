@@ -3,7 +3,7 @@
 namespace App\View\Composers;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class UserComposer
@@ -12,7 +12,7 @@ class UserComposer
 
     public function __construct()
     {
-        $this->users = User::all();
+        $this->users = User::pluck('name', 'id');
     }
 
     public function compose(View $view): void

@@ -3,7 +3,7 @@
 namespace App\View\Composers;
 
 use App\Models\TaskStatus;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class TaskStatusComposer
@@ -12,7 +12,7 @@ class TaskStatusComposer
 
     public function __construct()
     {
-        $this->taskStatuses = TaskStatus::all();
+        $this->taskStatuses = TaskStatus::pluck('name', 'id');
     }
 
     public function compose(View $view): void

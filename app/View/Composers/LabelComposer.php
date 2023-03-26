@@ -3,7 +3,7 @@
 namespace App\View\Composers;
 
 use App\Models\Label;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class LabelComposer
@@ -12,7 +12,7 @@ class LabelComposer
 
     public function __construct()
     {
-        $this->labels = Label::all();
+        $this->labels = Label::pluck('name', 'id');
     }
 
     public function compose(View $view): void
