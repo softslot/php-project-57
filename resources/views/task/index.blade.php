@@ -3,7 +3,6 @@
 
     <div class="w-full flex items-center">
         <div>
-           
             <form method="GET" action="{{ route('tasks.index') }}" accept-charset="UTF-8">
                 <div class="flex">
                     <div>
@@ -47,37 +46,36 @@
         @endcan
     </div>
 
-
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-10">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr scope="col" class="p-4">
-                    <th scope="col" class="py-3 px-6">{{ __('task.id') }}</th>
-                    <th scope="col" class="py-3 px-6">{{ __('task.status') }}</th>
-                    <th scope="col" class="py-3 px-6">{{ __('task.name') }}</th>
-                    <th scope="col" class="py-3 px-6">{{ __('task.author') }}</th>
-                    <th scope="col" class="py-3 px-6">{{ __('task.assigned') }}</th>
-                    <th scope="col" class="py-3 px-6">{{ __('task.created_at') }}</th>
-                    @auth
-                        <th scope="col" class="py-3 px-6">{{ __('table.actions') }}</th>
-                    @endauth
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($tasks as $task)
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="p-4 w-4 text-center">{{ $task->id }}</td>
-                    <td class="py-4 px-6">{{ $task->status->name }}</td>
-                    <td class="py-4 px-6">
+    <x-table>
+        <x-table.thead>
+            <x-table.tr>
+                <x-table.th class="text-center">{{ __('task.id') }}</x-table.th>
+                <x-table.th>{{ __('task.status') }}</x-table.th>
+                <x-table.th>{{ __('task.name') }}</x-table.th>
+                <x-table.th>{{ __('task.author') }}</x-table.th>
+                <x-table.th>{{ __('task.assigned') }}</x-table.th>
+                <x-table.th>{{ __('task.created_at') }}</x-table.th>
+                @auth
+                    <x-table.th class="text-center">{{ __('table.actions') }}</x-table.th>
+                @endauth
+            </x-table.tr>
+        </x-table.thead>
+        
+        <x-table.tbody>
+            @foreach ($tasks as $task)
+                <x-table.tr>
+                    <x-table.td class="text-center">{{ $task->id }}</x-table.td>
+                    <x-table.td>{{ $task->status->name }}</x-table.td>
+                    <x-table.td>
                         <a href="{{ route('tasks.show', $task->id) }}" class="text-blue-600 hover:text-blue-900">
                             {{ $task->name }}
                         </a>
-                    </td>
-                    <td class="py-4 px-6">{{ $task->creator->name }}</td>
-                    <td class="py-4 px-6">{{ $task->executor?->name }}</td>
-                    <td class="py-4 px-6">{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
+                    </x-table.td>
+                    <x-table.td>{{ $task->creator->name }}</x-table.td>
+                    <x-table.td>{{ $task->executor?->name }}</x-table.td>
+                    <x-table.td>{{ date('d.m.Y', strtotime($task->created_at)) }}</x-table.td>
                     @auth
-                        <td class="flex items-center py-4 px-6 space-x-3">
+                        <x-table.td class="space-x-3 text-center">
                             @can('delete', $task)
                                 <a data-confirm="{{ __('table.confirm') }}"
                                     data-method="delete"
@@ -89,13 +87,12 @@
                                 <a href="{{ route('tasks.edit', $task->id) }}"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('table.edit') }}</a>
                             @endcan
-                        </td>
+                        </x-table.td>
                     @endauth
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                </x-table.tr>
+            @endforeach
+        </x-table.tbody>
+    </x-table>
 
     <div class="mt-4">
         {{ $tasks->links() }}

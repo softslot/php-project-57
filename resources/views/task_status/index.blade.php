@@ -11,7 +11,7 @@
     @endcan
 
     <x-table>
-        <x-slot name="thead">
+        <x-table.thead>
             <x-table.tr>
                 <x-table.th class="text-center">{{ __('task_status.id') }}</x-table.th>
                 <x-table.th>{{ __('task_status.name') }}</x-table.th>
@@ -20,30 +20,32 @@
                     <x-table.th class="text-center">{{ __('table.actions') }}</x-table.th>
                 @endauth
             </x-table.tr>
-        </x-slot>
+        </x-table.thead>
 
-        @foreach ($taskStatuses as $taskStatus)
-            <x-table.tr>
-                <x-table.td class="text-center">{{ $taskStatus->id }}</x-table.td>
-                <x-table.td>{{ $taskStatus->name }}</x-table.td>
-                <x-table.td>{{ date('d.m.Y', strtotime($taskStatus->created_at)) }}</x-table.td>
-                @auth
-                    <x-table.td class="space-x-3 text-center">
-                        @can('delete', $taskStatus)
-                            <a data-confirm="{{ __('table.confirm') }}"
-                                data-method="delete"
-                                class="text-red-600 hover:text-red-900"
-                                href="{{ route('task_statuses.destroy', $taskStatus->id) }}">{{ __('table.delete') }}</a>
-                        @endcan
+        <x-table.tbody>
+            @foreach ($taskStatuses as $taskStatus)
+                <x-table.tr>
+                    <x-table.td class="text-center">{{ $taskStatus->id }}</x-table.td>
+                    <x-table.td>{{ $taskStatus->name }}</x-table.td>
+                    <x-table.td>{{ date('d.m.Y', strtotime($taskStatus->created_at)) }}</x-table.td>
+                    @auth
+                        <x-table.td class="space-x-3 text-center">
+                            @can('delete', $taskStatus)
+                                <a data-confirm="{{ __('table.confirm') }}"
+                                    data-method="delete"
+                                    class="text-red-600 hover:text-red-900"
+                                    href="{{ route('task_statuses.destroy', $taskStatus->id) }}">{{ __('table.delete') }}</a>
+                            @endcan
 
-                        @can('update', $taskStatus)
-                            <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                href="{{ route('task_statuses.edit', $taskStatus->id) }}">{{ __('table.edit') }}</a>
-                        @endcan
-                    </x-table.td>
-                @endauth
-            </x-table.tr>
-        @endforeach
+                            @can('update', $taskStatus)
+                                <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                    href="{{ route('task_statuses.edit', $taskStatus->id) }}">{{ __('table.edit') }}</a>
+                            @endcan
+                        </x-table.td>
+                    @endauth
+                </x-table.tr>
+            @endforeach
+        </x-table.tbody>
     </x-table>
 
     <div class="mt-4">
