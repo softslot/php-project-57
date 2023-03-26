@@ -6,7 +6,7 @@ use App\Http\Requests\StoreLabelRequest;
 use App\Http\Requests\UpdateLabelRequest;
 use App\Models\Label;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class LabelController extends Controller
 {
@@ -15,16 +15,16 @@ class LabelController extends Controller
         $this->authorizeResource(Label::class, 'label');
     }
 
-    public function index(): Response
+    public function index(): View
     {
         $labels = Label::paginate();
 
-        return response()->view('label.index', compact('labels'));
+        return view('pages.label.index', compact('labels'));
     }
 
-    public function create(): Response
+    public function create(): View
     {
-        return response()->view('label.create');
+        return view('pages.label.create');
     }
 
     public function store(StoreLabelRequest $request): RedirectResponse
@@ -36,9 +36,9 @@ class LabelController extends Controller
         return redirect()->route('labels.index');
     }
 
-    public function edit(Label $label): Response
+    public function edit(Label $label): View
     {
-        return response()->view('label.edit', compact('label'));
+        return view('pages.label.edit', compact('label'));
     }
 
     public function update(UpdateLabelRequest $request, Label $label): RedirectResponse

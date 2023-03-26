@@ -28,20 +28,20 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer([
-            'task.index',
-            'task.edit',
-            'task.create',
+            'pages.task.index',
+            'pages.task.edit',
+            'pages.task.create',
         ], UserComposer::class);
 
         View::composer([
-            'task.index',
-            'task.edit',
-            'task.create',
+            'pages.task.index',
+            'pages.task.edit',
+            'pages.task.create',
         ], TaskStatusComposer::class);
 
         View::composer([
-            'task.edit',
-            'task.create',
+            'pages.task.edit',
+            'pages.task.create',
         ], LabelComposer::class);
     }
 }

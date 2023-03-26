@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class TaskController extends Controller
 {
@@ -14,7 +14,7 @@ class TaskController extends Controller
         $this->authorizeResource(Task::class, 'task');
     }
 
-    public function index(): Response
+    public function index(): View
     {
         $tasks = Task::with([
             'creator',
@@ -23,12 +23,12 @@ class TaskController extends Controller
         ])
         ->paginate();
 
-        return response()->view('task.index', compact('tasks'));
+        return view('pages.task.index', compact('tasks'));
     }
 
-    public function create(): Response
+    public function create(): View
     {
-        return response()->view('task.create');
+        return view('pages.task.create');
     }
 
     public function store(StoreTaskRequest $request)
@@ -49,14 +49,14 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function show(Task $task): Response
+    public function show(Task $task): View
     {
-        return response()->view('task.show', compact('task'));
+        return view('pages.task.show', compact('task'));
     }
 
-    public function edit(Task $task): Response
+    public function edit(Task $task): View
     {
-        return response()->view('task.edit', compact('task'));
+        return view('pages.task.edit', compact('task'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
