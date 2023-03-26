@@ -24,11 +24,11 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:tasks,name',
-            'description' => 'nullable',
-            'status_id' => 'required|exists:task_statuses,id',
-            'assigned_to_id' => 'nullable|exists:users,id',
-            'labels' => '',
+            'name' => ['required', 'max:255', 'unique:tasks,name'],
+            'description' => ['nullable'],
+            'status_id' => ['required', 'exists:task_statuses,id'],
+            'assigned_to_id' => ['nullable', 'exists:users,id'],
+            'labels' => [''],
         ];
     }
 }

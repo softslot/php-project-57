@@ -24,8 +24,8 @@ class UpdateLabelRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:labels,name,' . $this->label->id,
-            'description' => 'nullable',
+            'name' => ['required', 'max:255', "unique:labels,name,{$this->label->id}"],
+            'description' => ['nullable'],
         ];
     }
 }
