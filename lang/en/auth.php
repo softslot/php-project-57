@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'get_in' => 'Get in',
     'login' => 'Sign in',
     'logout' => 'Sign out',
     'register' => 'Register',

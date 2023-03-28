@@ -44,7 +44,7 @@
                 @endif
 
                 <x-primary-button class="ml-3">
-                    {{ __('auth.login') }}
+                    {{ __('auth.get_in') }}
                 </x-primary-button>
             </div>
         </form>
