@@ -11,4 +11,25 @@
 
 <hr>
 
+Task Manager is a task management system similar to http://www.redmine.org /. It allows you to set tasks, assign performers and change their statuses. Registration and authentication are required to work with the system.
+
 Demo: https://php-project-57-production-048b.up.railway.app
+
+### Requirements
+
+- PHP 8.1+
+- Composer 2.0
+- Node.js
+- SQLite
+
+### Setup
+
+```sh
+make setup
+```
+
+### Run
+
+```sh
+make serve
+```
