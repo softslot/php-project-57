@@ -20,7 +20,7 @@ class TaskStatusControllerTest extends TestCase
         $this->user = User::factory()->create();
 
         $this->taskStatus = TaskStatus::factory()->create();
-        
+
         $this->data = TaskStatus::factory()->make()->only(['name']);
     }
 
@@ -68,7 +68,7 @@ class TaskStatusControllerTest extends TestCase
 
         $response->assertForbidden();
     }
-    
+
     public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));

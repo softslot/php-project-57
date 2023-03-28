@@ -24,9 +24,9 @@ class LabelControllerTest extends TestCase
         $this->user = User::factory()->create();
 
         $this->label = Label::factory()->create();
-        
+
         $this->task = Task::factory()->create();
-        
+
         $this->data = Task::factory()->make()->only(['name']);
     }
 
