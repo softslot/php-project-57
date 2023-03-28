@@ -85,7 +85,7 @@ return [
     'min' => [
         'numeric' => 'Поле :attribute должно быть не менее :min.',
         'file' => 'Поле :attribute должно быть не менее :min Килобайт.',
-        'string' => 'Поле :attribute должно быть не короче :min символов.',
+        'string' => ':attribute должен иметь длину не менее :min символов.',
         'array' => 'Поле :attribute должно содержать не менее :min элементов.'
     ],
     'min_digits' => 'Поле :attribute должно содержать не меньше :min цифр.',
@@ -137,5 +137,7 @@ return [
         ],
     ],
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => 'Пароль',
+    ],
 ];
