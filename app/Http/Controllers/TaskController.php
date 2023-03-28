@@ -6,6 +6,9 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
@@ -14,16 +17,24 @@ class TaskController extends Controller
         $this->authorizeResource(Task::class, 'task');
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $tasks = Task::with([
-            'creator',
-            'executor',
-            'status',
-        ])
-        ->paginate();
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+            ])
+            ->with([
+                'creator',
+                'executor',
+                'status',
+            ])
+            ->paginate();
 
-        return view('pages.tasks.index', compact('tasks'));
+        $filter = $request->filter ?? null;
+
+        return view('pages.tasks.index', compact('tasks', 'filter'));
     }
 
     public function create(): View

@@ -3,37 +3,56 @@
 
     <div class="w-full flex items-center">
         <div>
-            <form method="GET" action="{{ route('tasks.index') }}" accept-charset="UTF-8">
+            {{ Form::open(['route' => 'tasks.index', 'method' => 'get']) }}
                 <div class="flex">
                     <div>
-                        <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="filter[status_id]">
-                            <option selected="selected" value="">{{ __('task.status') }}</option>
-                            @foreach ($taskStatuses as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
+                        {{
+                            Form::select(
+                                'filter[status_id]',
+                                $taskStatuses, $filter['status_id'] ?? null,
+                                [
+                                    'placeholder' => __('task.status'),
+                                    'class' => 'form-select ml-2 rounded border-gray-300',
+                                ]
+                            )
+                        }}
+                    </div>
+                    <div >
+                        {{
+                            Form::select(
+                                'filter[created_by_id]',
+                                $users, $filter['created_by_id'] ?? null,
+                                [
+                                    'placeholder' => __('task.author'),
+                                    'class' => 'form-select ml-2 rounded border-gray-300',
+                                ]
+                            )
+                        }}
                     </div>
                     <div>
-                        <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="filter[created_by_id]">
-                            <option selected="selected" value="">{{ __('task.author') }}</option>
-                            @foreach ($users as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
+                        {{
+                            Form::select(
+                                'filter[assigned_to_id]',
+                                $users, $filter['assigned_to_id'] ?? null,
+                                [
+                                    'placeholder' => __('task.assigned'),
+                                    'class' => 'form-select ml-2 rounded border-gray-300',
+                                ]
+                            )
+                        }}
                     </div>
                     <div>
-                        <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="filter[assigned_to_id]">
-                            <option selected="selected" value="">{{ __('task.assigned') }}</option>
-                            @foreach ($users as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <x-primary-button>{{ __('table.apply') }}</x-primary-button>
+                        {{
+                            Form::submit(
+                                __('table.apply'),
+                                [
+                                    'class' => 'ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded',
+                                ]
+                            )
+                        }}
                     </div>
                 </div>
-            </form>
+            {{ Form::close() }}
         </div>
 
         @can('create', App\Models\Task::class)
