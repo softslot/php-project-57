@@ -9,14 +9,14 @@ use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
-    public function test_reset_password_link_screen_can_be_rendered()
+    public function testResetPasswordLinkScreenCanBeRendered()
     {
         $response = $this->get('/forgot-password');
 
         $response->assertStatus(200);
     }
 
-    public function test_reset_password_link_can_be_requested()
+    public function testResetPasswordLinkCanBeRequested()
     {
         Notification::fake();
 
@@ -27,7 +27,7 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
-    public function test_reset_password_screen_can_be_rendered()
+    public function testResetPasswordScreenCanBeRendered()
     {
         Notification::fake();
 
@@ -44,7 +44,7 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    public function test_password_can_be_reset_with_valid_token()
+    public function testPasswordCanBeResetWithValidToken()
     {
         Notification::fake();
 

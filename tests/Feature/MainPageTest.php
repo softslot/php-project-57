@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class MainPageTest extends TestCase
 {
-    public function test_main_page(): void
+    public function testMainPage(): void
     {
         $response = $this->get('/');
 

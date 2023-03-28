@@ -24,28 +24,28 @@ class TaskStatusControllerTest extends TestCase
         $this->data = TaskStatus::factory()->make()->only(['name']);
     }
 
-    public function test_index_page(): void
+    public function testIndexPage(): void
     {
         $response = $this->get(route('task_statuses.index'));
 
         $response->assertOk();
     }
 
-    public function test_create_page_from_guest(): void
+    public function testCreatePageFromGuest(): void
     {
         $response = $this->get(route('task_statuses.create'));
 
         $response->assertForbidden();
     }
 
-    public function test_edit_page_from_guest(): void
+    public function testEditPageFromGuest(): void
     {
         $response = $this->get(route('task_statuses.edit', $this->taskStatus->id));
 
         $response->assertForbidden();
     }
 
-    public function test_store_from_guest(): void
+    public function testStoreFromGuest(): void
     {
         $response = $this->post(
             route('task_statuses.store'),
@@ -57,7 +57,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_update_from_guest(): void
+    public function testUpdateFromGuest(): void
     {
         $response = $this->put(
             route('task_statuses.update', $this->taskStatus->id),
@@ -69,7 +69,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertForbidden();
     }
     
-    public function test_delete_from_guest(): void
+    public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
@@ -78,7 +78,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_create_page_from_user(): void
+    public function testCreatePageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -87,7 +87,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_edit_page_from_user(): void
+    public function testEditPageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -96,7 +96,7 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_store_from_user(): void
+    public function testStoreFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -112,7 +112,7 @@ class TaskStatusControllerTest extends TestCase
             ->assertSessionHasNoErrors();
     }
 
-    public function test_update_from_user(): void
+    public function testUpdateFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -128,7 +128,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
-    public function test_delete_from_user(): void
+    public function testDeleteFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -141,7 +141,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseMissing('task_statuses', $this->taskStatus->only('id'));
     }
 
-    public function test_delete_task_status_attached_to_task(): void
+    public function testDeleteTaskStatusAttachedToTask(): void
     {
         Task::factory()->create([
             'status_id' => $this->taskStatus->id,

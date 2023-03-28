@@ -30,28 +30,28 @@ class LabelControllerTest extends TestCase
         $this->data = Task::factory()->make()->only(['name']);
     }
 
-    public function test_index_page(): void
+    public function testIndexPage(): void
     {
         $response = $this->get(route('labels.index'));
 
         $response->assertOk();
     }
 
-    public function test_create_page_from_guest(): void
+    public function testCreatePageFromGuest(): void
     {
         $response = $this->get(route('labels.create'));
 
         $response->assertForbidden();
     }
 
-    public function test_edit_page_from_guest(): void
+    public function testEditPageFromGuest(): void
     {
         $response = $this->get(route('labels.edit', $this->label->id));
 
         $response->assertForbidden();
     }
 
-    public function test_store_from_guest(): void
+    public function testStoreFromGuest(): void
     {
         $response = $this->post(
             route('labels.store'),
@@ -63,7 +63,7 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_update_from_guest(): void
+    public function testUpdateFromGuest(): void
     {
         $response = $this->put(
             route('labels.update', $this->label->id),
@@ -75,7 +75,7 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_delete_from_guest(): void
+    public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('labels.destroy', $this->label->id));
 
@@ -84,7 +84,7 @@ class LabelControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_create_page_from_user(): void
+    public function testCreatePageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -93,7 +93,7 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_edit_page_from_user(): void
+    public function testEditPageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -102,7 +102,7 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_store_from_user(): void
+    public function testStoreFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -118,7 +118,7 @@ class LabelControllerTest extends TestCase
             ->assertSessionHasNoErrors();
     }
 
-    public function test_update_from_user(): void
+    public function testUpdateFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -134,7 +134,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', $this->data);
     }
 
-    public function test_delete_from_user(): void
+    public function testDeleteFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -147,7 +147,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseMissing('labels', $this->label->only('id'));
     }
 
-    public function test_delete_label_attached_to_task(): void
+    public function testDeleteLabelAttachedToTask(): void
     {
         $this->task
             ->labels()

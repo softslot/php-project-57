@@ -33,28 +33,28 @@ class TaskControllerTest extends TestCase
         ]);
     }
 
-    public function test_index_page(): void
+    public function testIndexPage(): void
     {
         $response = $this->get(route('tasks.index'));
 
         $response->assertOk();
     }
 
-    public function test_create_page_from_guest(): void
+    public function testCreatePageFromGuest(): void
     {
         $response = $this->get(route('tasks.create'));
 
         $response->assertForbidden();
     }
 
-    public function test_edit_page_from_guest(): void
+    public function testEditPageFromGuest(): void
     {
         $response = $this->get(route('tasks.edit', $this->task->id));
 
         $response->assertForbidden();
     }
 
-    public function test_store_from_guest(): void
+    public function testStoreFromGuest(): void
     {
         $response = $this->post(
             route('tasks.store'),
@@ -66,7 +66,7 @@ class TaskControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_update_from_guest(): void
+    public function testUpdateFromGuest(): void
     {
         $response = $this->put(
             route('tasks.update', $this->task->id),
@@ -78,7 +78,7 @@ class TaskControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_delete_from_guest(): void
+    public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('tasks.destroy', $this->task->id));
 
@@ -87,7 +87,7 @@ class TaskControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_create_page_from_user(): void
+    public function testCreatePageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -96,7 +96,7 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_edit_page_from_user(): void
+    public function testEditPageFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -105,7 +105,7 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_store_from_user(): void
+    public function testStoreFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -121,7 +121,7 @@ class TaskControllerTest extends TestCase
             ->assertSessionHasNoErrors();
     }
 
-    public function test_update_from_user(): void
+    public function testUpdateFromUser(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -137,7 +137,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', $this->data);
     }
 
-    public function test_delete_from_creator(): void
+    public function testDeleteFromCreator(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -150,7 +150,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseMissing('tasks', $this->task->only('id'));
     }
 
-    public function test_delete_from_non_creator(): void
+    public function testDeleteFromNonCreator(): void
     {
         $anotherUser = User::factory()->create();
 
