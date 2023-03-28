@@ -89,7 +89,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if ($task->creator->id !== auth()->id()) {
+        if ($task->creator?->id !== auth()->id()) {
             flash(__('task.not_deleted'))->error();
 
             return redirect()
