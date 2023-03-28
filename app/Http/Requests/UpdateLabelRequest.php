@@ -28,4 +28,12 @@ class UpdateLabelRequest extends FormRequest
             'description' => ['nullable'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.unique' => __('request.unique_label'),
+            'name.max' => __('request.max'),
+        ];
+    }
 }

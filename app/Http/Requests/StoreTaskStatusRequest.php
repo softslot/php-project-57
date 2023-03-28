@@ -25,4 +25,12 @@ class StoreTaskStatusRequest extends FormRequest
             'name' => ['required', 'max:255', 'unique:task_statuses,name'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.max' => __('request.max'),
+            'name.unique' => __('request.unique_task_status'),
+        ];
+    }
 }

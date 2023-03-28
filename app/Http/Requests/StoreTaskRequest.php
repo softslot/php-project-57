@@ -31,4 +31,12 @@ class StoreTaskRequest extends FormRequest
             'labels' => [''],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.unique' => __('request.unique_task'),
+            'name.max' => __('request.max'),
+        ];
+    }
 }
