@@ -46,10 +46,12 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
-        $task = Task::create([
+        $task = new Task();
+        $task->fill([
             ...$validatedData,
             'created_by_id' => auth()->id(),
         ]);
+        $task->save();
 
         if (isset($validatedData['labels'])) {
             $task->labels()->sync($validatedData['labels']);

@@ -33,6 +33,6 @@ class TaskPolicy
 
     public function delete(User $user, Task $task): Response|bool
     {
-        return $user->id === $task->creator->id;
+        return $task->creator->is($user);
     }
 }
