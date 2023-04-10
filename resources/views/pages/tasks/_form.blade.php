@@ -5,7 +5,7 @@
         {{ Form::label('name', __('task.name')) }}
     </div>
     <div class="mt-2">
-        {{ Form::text('name', $task->name ?? null, ['class' => 'rounded border-gray-300 w-1/3']) }}
+        {{ Form::text('name', options: ['class' => 'rounded border-gray-300 w-1/3']) }}
     </div>
     @error('name')
         <div class="text-rose-600">{{ $errors->first('name') }}</div>
@@ -16,9 +16,9 @@
     </div>
     <div>
         {{
-            Form::textarea('description',
-                $task->description ?? null,
-                [
+            Form::textarea(
+                'description',
+                options: [
                     'rows' => 10,
                     'cols' => 50,
                     'class' => 'rounded border-gray-300 w-1/3 h-32',
@@ -35,10 +35,10 @@
     </div>
     <div>
         {{ 
-            Form::select('status_id',
+            Form::select(
+                'status_id',
                 $taskStatuses,
-                $task->status->id ?? null,
-                [
+                selectAttributes: [
                     'class' => 'rounded border-gray-300 w-1/3',
                     'placeholder' => '----------',
                 ]
@@ -54,10 +54,10 @@
     </div>
     <div>
         {{
-            Form::select('assigned_to_id',
+            Form::select(
+                'assigned_to_id',
                 $users,
-                $task->executor->id ?? null,
-                [
+                selectAttributes: [
                     'class' => 'rounded border-gray-300 w-1/3',
                     'placeholder' => '----------',
                 ]
@@ -73,10 +73,10 @@
     </div>
     <div>
         {{
-            Form::select('labels[]',
+            Form::select(
+                'labels[]',
                 $labels,
-                $task->labels ?? null,
-                [
+                selectAttributes: [
                     'class' => 'rounded border-gray-300 w-1/3 h-32',
                     'multiple' => 'multiple',
                 ]

@@ -5,7 +5,7 @@
         {{ Form::label('name', __('task_status.name')) }}
     </div>
     <div class="mt-2">
-        {{ Form::text('name', $taskStatus->name ?? null, ['class' => 'rounded border-gray-300 w-1/3']) }}
+        {{ Form::text('name', options: ['class' => 'rounded border-gray-300 w-1/3']) }}
     </div>
     @error('name')
         <div class="text-rose-600">{{ $errors->first('name') }}</div>
