@@ -12,7 +12,6 @@ class LabelControllerTest extends TestCase
 {
     private User $user;
     private Label $label;
-    private Task $task;
     private array $data;
 
     protected function setUp(): void
@@ -25,9 +24,7 @@ class LabelControllerTest extends TestCase
 
         $this->label = Label::factory()->create();
 
-        $this->task = Task::factory()->create();
-
-        $this->data = Task::factory()->make()->only(['name']);
+        $this->data = Label::factory()->make()->only(['name']);
     }
 
     public function testIndexPage(): void
@@ -149,9 +146,9 @@ class LabelControllerTest extends TestCase
 
     public function testDeleteLabelAttachedToTask(): void
     {
-        $this->task
-            ->labels()
-            ->attach($this->label);
+        Task::factory()
+            ->hasAttached($this->label)
+            ->create();
 
         $response = $this
             ->actingAs($this->user)
