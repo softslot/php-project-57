@@ -10,7 +10,10 @@ Route::view('/', 'pages.home')->name('home');
 Route::resource('tasks', TaskController::class);
 
 Route::resources(
-    ['task_statuses' => TaskStatusController::class, 'labels' => LabelController::class],
+    [
+        'task_statuses' => TaskStatusController::class,
+        'labels' => LabelController::class,
+    ],
     ['except' => ['show']]
 );
 
