@@ -8,7 +8,7 @@ class MainPageTest extends TestCase
 {
     public function testMainPage(): void
     {
-        $response = $this->get('/');
+        $response = $this->get(route('home'));
 
         $response->assertOk();
     }
