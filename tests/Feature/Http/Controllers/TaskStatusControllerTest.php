@@ -53,7 +53,7 @@ class TaskStatusControllerTest extends TestCase
         );
 
         $response->assertForbidden();
-        
+
         $this->assertDatabaseMissing('task_statuses', $this->data);
     }
 
