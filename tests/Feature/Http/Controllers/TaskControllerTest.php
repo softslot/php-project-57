@@ -21,16 +21,18 @@ class TaskControllerTest extends TestCase
 
         $this->user = User::factory()->create();
 
-        $this->task = Task::factory()->create([
-            'created_by_id' => $this->user->id,
-        ]);
+        $this->task = Task::factory()
+            ->for($this->user, 'creator')
+            ->create();
 
-        $this->data = Task::factory()->make()->only([
-            'name',
-            'description',
-            'status_id',
-            'assigned_to_id',
-        ]);
+        $this->data = Task::factory()
+            ->make()
+            ->only([
+                'name',
+                'description',
+                'status_id',
+                'assigned_to_id',
+            ]);
     }
 
     public function testIndexPage(): void
