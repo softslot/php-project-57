@@ -52,9 +52,9 @@ class TaskStatusControllerTest extends TestCase
             $this->data
         );
 
-        $this->assertDatabaseMissing('task_statuses', $this->data);
-
         $response->assertForbidden();
+        
+        $this->assertDatabaseMissing('task_statuses', $this->data);
     }
 
     public function testUpdateFromGuest(): void
@@ -64,18 +64,18 @@ class TaskStatusControllerTest extends TestCase
             $this->data,
         );
 
-        $this->assertDatabaseMissing('task_statuses', $this->data);
-
         $response->assertForbidden();
+
+        $this->assertDatabaseMissing('task_statuses', $this->data);
     }
 
     public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
-        $this->assertDatabaseHas('task_statuses', $this->taskStatus->only('id'));
-
         $response->assertForbidden();
+
+        $this->assertDatabaseHas('task_statuses', $this->taskStatus->only('id'));
     }
 
     public function testCreatePageFromUser(): void
@@ -105,11 +105,11 @@ class TaskStatusControllerTest extends TestCase
                 $this->data
             );
 
-        $this->assertDatabaseHas('task_statuses', $this->data);
-
         $response
             ->assertRedirectToRoute('task_statuses.index')
             ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('task_statuses', $this->data);
     }
 
     public function testUpdateFromUser(): void

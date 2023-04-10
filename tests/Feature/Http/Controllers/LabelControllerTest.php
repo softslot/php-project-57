@@ -58,9 +58,9 @@ class LabelControllerTest extends TestCase
             $this->data
         );
 
-        $this->assertDatabaseMissing('labels', $this->data);
-
         $response->assertForbidden();
+
+        $this->assertDatabaseMissing('labels', $this->data);
     }
 
     public function testUpdateFromGuest(): void
@@ -70,18 +70,18 @@ class LabelControllerTest extends TestCase
             $this->data
         );
 
-        $this->assertDatabaseMissing('labels', $this->data);
-
         $response->assertForbidden();
+
+        $this->assertDatabaseMissing('labels', $this->data);
     }
 
     public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('labels.destroy', $this->label->id));
 
-        $this->assertDatabaseHas('labels', $this->label->only('id'));
-
         $response->assertForbidden();
+
+        $this->assertDatabaseHas('labels', $this->label->only('id'));
     }
 
     public function testCreatePageFromUser(): void
@@ -111,11 +111,11 @@ class LabelControllerTest extends TestCase
                 $this->data
             );
 
-        $this->assertDatabaseHas('labels', $this->data);
-
         $response
             ->assertRedirectToRoute('labels.index')
             ->assertSessionHasNoErrors();
+        
+        $this->assertDatabaseHas('labels', $this->data);
     }
 
     public function testUpdateFromUser(): void

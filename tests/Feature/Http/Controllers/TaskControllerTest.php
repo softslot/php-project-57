@@ -61,9 +61,9 @@ class TaskControllerTest extends TestCase
             $this->data
         );
 
-        $this->assertDatabaseMissing('tasks', $this->data);
-
         $response->assertForbidden();
+
+        $this->assertDatabaseMissing('tasks', $this->data);
     }
 
     public function testUpdateFromGuest(): void
@@ -73,18 +73,18 @@ class TaskControllerTest extends TestCase
             $this->data
         );
 
-        $this->assertDatabaseMissing('tasks', $this->data);
-
         $response->assertForbidden();
+
+        $this->assertDatabaseMissing('tasks', $this->data);
     }
 
     public function testDeleteFromGuest(): void
     {
         $response = $this->delete(route('tasks.destroy', $this->task->id));
 
-        $this->assertDatabaseHas('tasks', $this->task->only('id'));
-
         $response->assertForbidden();
+
+        $this->assertDatabaseHas('tasks', $this->task->only('id'));
     }
 
     public function testCreatePageFromUser(): void
@@ -114,11 +114,11 @@ class TaskControllerTest extends TestCase
                 $this->data
             );
 
-        $this->assertDatabaseHas('tasks', $this->data);
-
         $response
             ->assertRedirectToRoute('tasks.index')
             ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('tasks', $this->data);
     }
 
     public function testUpdateFromUser(): void
@@ -158,8 +158,8 @@ class TaskControllerTest extends TestCase
             ->actingAs($anotherUser)
             ->delete(route('tasks.destroy', $this->task->id));
 
-        $this->assertDatabaseHas('tasks', $this->task->only('id'));
-
         $response->assertForbidden();
+
+        $this->assertDatabaseHas('tasks', $this->task->only('id'));
     }
 }
