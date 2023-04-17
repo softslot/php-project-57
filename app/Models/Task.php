@@ -21,7 +21,7 @@ class Task extends Model
 
     public function assignedTo(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'assigned_to_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function status(): BelongsTo
@@ -31,7 +31,7 @@ class Task extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function labels(): BelongsToMany
