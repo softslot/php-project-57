@@ -91,7 +91,7 @@
                         </a>
                     </x-table.td>
                     <x-table.td>{{ $task->createdBy->name }}</x-table.td>
-                    <x-table.td>{{ $task->executor?->name }}</x-table.td>
+                    <x-table.td>{{ $task->assignedTo?->name }}</x-table.td>
                     <x-table.td>{{ date('d.m.Y', strtotime($task->created_at)) }}</x-table.td>
                     @auth
                         <x-table.td class="space-x-3 text-center">
