@@ -27,7 +27,7 @@ class TaskController extends Controller
             ])
             ->with([
                 'creator',
-                'executor',
+                'assignedTo',
                 'status',
             ])
             ->paginate();
