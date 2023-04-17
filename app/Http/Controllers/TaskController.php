@@ -26,7 +26,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id'),
             ])
             ->with([
-                'creator',
+                'createdBy',
                 'assignedTo',
                 'status',
             ])
@@ -91,7 +91,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        if ($task->creator?->id !== auth()->id()) {
+        if ($task->createdBy?->id !== auth()->id()) {
             flash(__('task.not_deleted'))->error();
 
             return redirect()

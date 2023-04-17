@@ -22,7 +22,7 @@ class TaskControllerTest extends TestCase
         $this->user = User::factory()->create();
 
         $this->task = Task::factory()
-            ->for($this->user, 'creator')
+            ->for($this->user, 'createdBy')
             ->create();
 
         $this->data = Task::factory()
