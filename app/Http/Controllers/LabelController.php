@@ -52,7 +52,7 @@ class LabelController extends Controller
 
     public function destroy(Label $label): RedirectResponse
     {
-        if ($label->tasks->isNotEmpty()) {
+        if ($label->tasks()->exists()) {
             flash(__('label.not_deleted'))->error();
 
             return redirect()
