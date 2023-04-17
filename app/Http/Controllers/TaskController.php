@@ -32,7 +32,7 @@ class TaskController extends Controller
             ])
             ->paginate();
 
-        $filter = $request->filter ?? null;
+        $filter = $request->get('filter');
 
         return view('pages.tasks.index', compact('tasks', 'filter'));
     }
