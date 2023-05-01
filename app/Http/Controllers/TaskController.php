@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Label;
 use App\Models\Task;
+use App\Models\TaskStatus;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -34,12 +37,28 @@ class TaskController extends Controller
 
         $filter = $request->get('filter');
 
-        return view('pages.tasks.index', compact('tasks', 'filter'));
+        $taskStatuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+
+        return view('pages.tasks.index', compact(
+            'tasks',
+            'filter',
+            'taskStatuses',
+            'users',
+        ));
     }
 
     public function create(): View
     {
-        return view('pages.tasks.create');
+        $taskStatuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
+
+        return view('pages.tasks.create', compact(
+            'taskStatuses',
+            'users',
+            'labels',
+        ));
     }
 
     public function store(StoreTaskRequest $request)
@@ -69,7 +88,16 @@ class TaskController extends Controller
 
     public function edit(Task $task): View
     {
-        return view('pages.tasks.edit', compact('task'));
+        $taskStatuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
+
+        return view('pages.tasks.edit', compact(
+            'task',
+            'taskStatuses',
+            'users',
+            'labels',
+        ));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
