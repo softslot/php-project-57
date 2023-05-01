@@ -1,5 +1,3 @@
-{{ Form::token() }}
-
 <div class="flex flex-col">
     <div>
         {{ Form::label('name', __('label.name')) }}
