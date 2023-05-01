@@ -81,6 +81,11 @@
             )
         }}
     </div>
+    @error('labels.*')
+        @foreach ($errors->get('labels.*') as [$message]) 
+            <div class="text-rose-600">{{ $message }}</div>
+        @endforeach
+    @enderror
 
     <div class="mt-2">
         <x-primary-button>{{ $buttonText }}</x-primary-button>
