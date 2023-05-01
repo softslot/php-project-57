@@ -29,8 +29,7 @@ class TaskStatusController extends Controller
 
     public function store(StoreTaskStatusRequest $request): RedirectResponse
     {
-        TaskStatus::create($request->validated())
-            ->save();
+        TaskStatus::create($request->validated());
 
         flash(__('task_status.added'))->success()->important();
 
