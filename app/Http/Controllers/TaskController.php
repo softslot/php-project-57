@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
