@@ -68,9 +68,7 @@ class TaskController extends Controller
 
         $task = auth()->user()->createdTasks()->create($validatedData);
 
-        if (isset($validatedData['labels'])) {
-            $task->labels()->sync($validatedData['labels']);
-        }
+        $task->labels()->sync($validatedData['labels'] ?? []);
 
         flash(__('task.added'))->success();
 
@@ -102,11 +100,7 @@ class TaskController extends Controller
 
         $task->update($validatedData);
 
-        if (isset($validatedData['labels'])) {
-            $task->labels()->sync($validatedData['labels']);
-        } else {
-            $task->labels()->detach();
-        }
+        $task->labels()->sync($validatedData['labels'] ?? []);
 
         flash(__('task.updated'))->success();
 

@@ -81,6 +81,10 @@
             )
         }}
     </div>
+    @error('labels')
+        <div class="text-rose-600">{{ $errors->first('labels') }}</div>
+    @enderror
+
     @error('labels.*')
         @foreach ($errors->get('labels.*') as [$message]) 
             <div class="text-rose-600">{{ $message }}</div>
