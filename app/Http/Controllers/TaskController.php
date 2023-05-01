@@ -8,6 +8,7 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -61,7 +62,7 @@ class TaskController extends Controller
         ));
     }
 
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -95,7 +96,7 @@ class TaskController extends Controller
         ));
     }
 
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -112,7 +113,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
         if ($task->createdBy?->id !== auth()->id()) {
             flash(__('task.not_deleted'))->error();
