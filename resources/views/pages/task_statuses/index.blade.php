@@ -27,7 +27,7 @@
                 <x-table.tr>
                     <x-table.td class="text-center">{{ $taskStatus->id }}</x-table.td>
                     <x-table.td>{{ $taskStatus->name }}</x-table.td>
-                    <x-table.td>{{ date('d.m.Y', strtotime($taskStatus->created_at)) }}</x-table.td>
+                    <x-table.td>{{ $taskStatus->created_at->format('d.m.Y') }}</x-table.td>
                     @auth
                         <x-table.td class="space-x-3 text-center">
                             @can('delete', $taskStatus)

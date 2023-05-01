@@ -28,7 +28,7 @@
                     <x-table.td class="text-center">{{ $label->id }}</x-table.td>
                     <x-table.td>{{ $label->name }}</x-table.td>
                     <x-table.td>{{ $label->description }}</x-table.td>
-                    <x-table.td>{{ $label->created_at }}</x-table.td>
+                    <x-table.td>{{ $label->created_at->format('d.m.Y') }}</x-table.td>
                     @auth
                         <x-table.td class="space-x-3 text-center">
                             @can('delete', $label)
